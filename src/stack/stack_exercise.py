@@ -13,7 +13,7 @@
 
 from collections import deque
 from operator import eq, add, sub, mul, truediv
-from typing import Callable
+from typing import Callable, Optional
 from loguru import logger
 
 DEBUG_ENABLE = False
@@ -239,7 +239,7 @@ def _is_operator(c: str) -> bool:
     return c in ['+', '-', '*', '/']
 
 
-def get_result_from_postfix(expression: str) -> float:
+def get_result_from_postfix(expression: str) -> Optional[float]:
     """
     从后缀表达式计算结果。
     :param expression: 后缀表达式字符串
@@ -265,7 +265,6 @@ def get_result_from_postfix(expression: str) -> float:
                 idx += 1
                 current_char = expression[idx]
             num_stack.append(float(s))
-
         elif _is_operator(current_char):  # 如果是运算符
             val1 = num_stack.pop()
             val2 = num_stack.pop()
@@ -281,4 +280,4 @@ def get_result_from_postfix(expression: str) -> float:
             idx += 1
 
     # 返回计算结果
-    return num_stack.pop()
+    return num_stack.pop() if num_stack else None
